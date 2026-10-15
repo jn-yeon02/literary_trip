@@ -15,7 +15,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Gowun Dodum','A
 .wrap{max-width:560px;margin:0 auto;padding:16px 14px 90px}
 h1{font-family:'Jua','Apple SD Gothic Neo',sans-serif;font-weight:400;font-size:30px;line-height:1.2;margin:6px 0 14px}
 .tabs{display:flex;gap:8px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:8px 0;z-index:5}
-.tabs button{flex:1;font:inherit;font-family:'Jua',sans-serif;font-size:16px;padding:10px 6px;border:2.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);cursor:pointer}
+.tabs button{flex:1;font:inherit;font-family:'Jua',sans-serif;font-size:15px;line-height:1.25;padding:10px 4px;border:2.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--green);color:#1C1C1C}
 .who{border:2.5px dashed var(--line);background:var(--box);border-radius:14px;padding:10px 12px;margin:10px 0 16px;display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center}
 .who label{font-family:'Jua',sans-serif}
@@ -42,6 +42,21 @@ input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--coral);o
 .msg{position:fixed;left:50%;transform:translateX(-50%);bottom:84px;background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:12px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:7}
 .msg.on{opacity:1}
 .save{font-size:13px;color:var(--sub);text-align:right;margin:-6px 2px 8px}
+[hidden]{display:none!important}
+.meta p{margin:0 0 6px}
+.meta b{font-family:'Jua',sans-serif;font-weight:400;margin-right:8px}
+.th{font-family:'Jua',sans-serif;font-weight:400;font-size:18px;margin:4px 2px 8px}
+.tbw{border:3px solid var(--line);border-radius:20px;overflow:hidden;margin:0 0 16px;background:var(--card)}
+.tb{width:calc(100% + 4px);margin:-2px;table-layout:fixed;border-collapse:collapse;font-size:14px;line-height:1.45}
+.tb th,.tb td{border:1.5px solid var(--line);padding:8px 5px;vertical-align:middle;word-break:keep-all}
+.tb th{background:#2F4F8F;color:#fff;font-family:'Jua',sans-serif;font-weight:400}
+.tb td.p{font-family:'Jua',sans-serif;text-align:center;background:var(--soft)}
+.tb td.c{text-align:center}
+.tb ul{margin:0;padding:0;list-style:none}
+.tb li{position:relative;padding-left:11px}
+.tb li+li{margin-top:4px}
+.tb li:before{content:"·";position:absolute;left:2px}
+.go{display:block;text-align:center;text-decoration:none;font-family:'Jua',sans-serif;font-size:18px;padding:14px;border:3px solid var(--line);border-radius:16px;background:var(--green);color:#1C1C1C}
 </style>
 </head>
 <body>
@@ -49,6 +64,7 @@ input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--coral);o
   <div class="tabs" role="tablist">
     <button role="tab" id="t0" aria-selected="true">문학기행</button>
     <button role="tab" id="t1" aria-selected="false">북 큐레이션 카드</button>
+    <button role="tab" id="t2" aria-selected="false">안내</button>
   </div>
   <h1 id="title">‘함께, 탐독’<br>문학기행</h1>
   <div class="who">
@@ -105,7 +121,30 @@ function bind(el,key){
 function mk(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function area(key,rows){var t=mk("textarea");if(rows)t.style.minHeight=rows;bind(t,key);return t}
 function text(key){var i=mk("input");i.type="text";bind(i,key);return i}
+var TABLE=`<h2 class="th">🕒 일정</h2><div class="tbw"><table class="tb"><colgroup><col style="width:19%"><col style="width:22%"><col></colgroup>
+<thead><tr><th>프로그램</th><th>시간</th><th>내용</th></tr></thead><tbody>
+<tr><td class="p" rowspan="2">학교 집결</td><td class="c">해남, 강진</td><td><ul><li>해남고, 제일중: 해남고등학교 집결 (08:00)</li><li>강진고: 강진고등학교 집결 (08:30)</li></ul></td></tr>
+<tr><td class="c">무안</td><td><ul><li>남악고, 남악중: 남악고등학교 집결 (08:45)</li><li>행복중, 오룡중: 오룡중학교 집결 (08:45)</li></ul></td></tr>
+<tr><td class="p">이동</td><td class="c">학교별 상이</td><td><ul><li>고창 황윤석 도서관으로 이동 (버스)</li></ul></td></tr>
+<tr><td class="p">도서관 견학</td><td class="c">10:00<br>~11:30</td><td><ul><li>고창 황윤석 도서관 견학</li></ul></td></tr>
+<tr><td class="p">점심</td><td class="c">11:30<br>~13:00</td><td><ul><li>점심 식사</li></ul></td></tr>
+<tr><td class="p">이동</td><td class="c">13:00<br>~13:30</td><td><ul><li>고창 서점마을로 이동 (버스)</li></ul></td></tr>
+<tr><td class="p">서점마을 탐방</td><td class="c">13:30<br>~15:00</td><td><ul><li>고창 서점마을 탐방</li></ul></td></tr>
+<tr><td class="p">귀가</td><td class="c">15:30<br>~</td><td><ul><li>귀가</li></ul></td></tr>
+</tbody></table></div>`;
+function renderInfo(){
+  document.getElementById("title").innerHTML="‘함께, 탐독’<br>문학기행 안내";
+  var h='<section class="q meta"><h2><span class="n">📅</span><span>일시·장소</span></h2><p><b>일시</b>2026. 10. 24.(토) 08:30~16:30</p><p><b>장소</b>고창 황윤석 도서관, 고창 서점마을</p></section>';
+  h+=TABLE;
+  h+='<a class="go" href="https://form.naver.com/response/2PkckCZ3Esi" target="_blank" rel="noopener">설문조사 참여하기</a>';
+  document.getElementById("form").innerHTML=h;
+}
 function render(){
+  var info=cur===2;
+  document.querySelector(".who").hidden=info;
+  document.getElementById("save").hidden=info;
+  document.querySelector(".bar").hidden=info;
+  if(info){renderInfo();return}
   var s=SHEETS[cur],f=document.getElementById("form");
   document.getElementById("title").innerHTML=s.title;
   f.innerHTML="";
@@ -199,8 +238,8 @@ document.getElementById("clear").addEventListener("click",function(){
   persist();render();toast("지웠어요");
 });
 ["school","sid","name"].forEach(function(id){bind(document.getElementById(id),id)});
-[0,1].forEach(function(i){document.getElementById("t"+i).addEventListener("click",function(){
-  cur=i;document.getElementById("t0").setAttribute("aria-selected",i===0);document.getElementById("t1").setAttribute("aria-selected",i===1);render();window.scrollTo(0,0)})});
+[0,1,2].forEach(function(i){document.getElementById("t"+i).addEventListener("click",function(){
+  cur=i;[0,1,2].forEach(function(j){document.getElementById("t"+j).setAttribute("aria-selected",i===j)});render();window.scrollTo(0,0)})});
 render();
 </script>
 </body>
